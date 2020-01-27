@@ -54,3 +54,34 @@
   (testing "else part"
     (is (= :tuntun (conditions-apply [0 9 8 7 6]))))
   )
+
+(deftest repeat-and-truncate-test
+  (testing "repeat"
+    (is (= '(1 2 3 1 2 3) (repeat-and-truncate [1 2 3] true false 5))))
+  (testing "truncate"
+    (is (= '(1 2) (repeat-and-truncate [1 2 3] false true 2))))
+  (testing "repeat and truncate"
+    (is (= '(1 2 3 1 2) (repeat-and-truncate [1 2 3] true true 5))))
+  )
+
+(deftest order-in-words-test
+  (testing "for x > y and y > z"
+    (is (= [:x-greater-than-y :y-greater-than-z] (order-in-words 4 3 2))))
+  (testing "for x > y and z > y"
+    (is (= [:x-greater-than-y :z-greater-than-x] (order-in-words 4 3 5))))
+  (testing "for z > x"
+    (is (= [:z-greater-than-x] (order-in-words 2 3 4)))))
+
+(deftest zero-aliases-test
+  (testing "0 -> :zero" (is (= :zero (zero-aliases 0))))
+  (testing "[] -> :empty" (is (= :empty (zero-aliases []))))
+  (testing "'() -> :empty" (is (= :empty (zero-aliases '()))))
+  (testing "#{} -> :empty-set" (is (= :empty-set (zero-aliases #{}))))
+  (testing "{} -> :empty-map" (is (= :empty-map (zero-aliases {}))))
+  (testing "\"\" -> :empty-string" (is (= :empty-string (zero-aliases "")))))
+
+(deftest zero-separated-palindrome-test
+  (testing "[1 2 3] -> (4 3 2 0 2 3 4)"
+    (is (= '(4 3 2 0 2 3 4) (zero-separated-palindrome [1 2 3])))
+    (is (= '(:a 0 :a) (zero-separated-palindrome [:a])))
+    ))
