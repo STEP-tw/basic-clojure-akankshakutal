@@ -1,4 +1,5 @@
-(ns assignments.conditions)
+(ns assignments.conditions
+  (:require [assignments.util :as u]))
 
 (defn safe-divide
   "Returns the result of x/y unless y is 0. Returns nil when y is 0"
@@ -42,8 +43,9 @@
   {:level        :easy
    :use          '[when-first concat]
    :alternates   '[empty? seq? conj into]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (when-first [a coll] (concat (vector a) coll)))
 
 (defn five-point-someone
   "Returns :chetan-bhagat if y is 5.
@@ -52,8 +54,14 @@
   Otherwise it returns :universe"
   {:level        :easy
    :use          '[cond]
-   :implemented? false}
-  [x y])
+   :implemented? true}
+  [x y]
+  (cond
+    (= y 5) :chetan-bhagat
+    (= x 5) :satan-bhagat
+    (> x y) :greece
+    :else :universe)
+  )
 
 (defn conditions-apply
   "Given a collection of any length, returns:
@@ -64,8 +72,13 @@
   {:level        :medium
    :use          '[condp filter]
    :alternates   '[if cond]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (condp u/single-occurrence? coll
+    [1 3] :wonder-woman
+    [:a :b :c] :durga
+    [[2 3] [4 5]] :cleopatra
+    :tuntun))
 
 (defn repeat-and-truncate
   "Given coll and options to repeat and truncate

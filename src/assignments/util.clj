@@ -13,3 +13,13 @@
 (defmacro print-and-do [& forms]
   (let [forms-with-println (mapcat insert-println-if-implemented forms)]
     (list* 'do forms-with-println)))
+
+(defn single-count [x y] (and (= 1 (count y)) (= x (first y))))
+
+(defn single-occurrence? [x y]
+  (->> y
+       (filter (into #{} x))
+       (partition-by identity)
+       (map first)
+       (partition (count x))
+       (single-count x)))
