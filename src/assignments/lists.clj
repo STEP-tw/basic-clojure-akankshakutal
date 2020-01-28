@@ -43,9 +43,13 @@
   {:level        :medium
    :use          '[loop recur]
    :dont-use     '[reduce]
-   :implemented? false}
-  ([f coll])
-  ([f init coll]))
+   :implemented? true}
+  ([f coll] (reduce' f (u/get-or-default coll f) (rest coll)))
+  ([f init coll]
+   (loop [coll coll result init]
+     (if (empty? coll)
+       result
+       (recur (rest coll) (f result (first coll)))))))
 
 (defn count'
   "Implement your own version of count that counts the
@@ -66,8 +70,8 @@
   {:level        :easy
    :use          '[reduce conj seqable? when]
    :dont-use     '[reverse]
-   :implemented? false}
-  ([coll]))
+   :implemented? true}
+  ([coll] (when (seqable? coll) (reduce conj '() coll))))
 
 (defn every?'
   "Implement your own version of every? that checks if every

@@ -20,3 +20,14 @@
     (is (= 4 (count' [1 2 3 4])))
     (is (= 4 (count' '(1 2 3 4))))
     (is (= 4 (count' "word")))))
+
+(deftest reduce'-test
+  (testing "reduce"
+    (is (= 6 (reduce' + [1 2 3])))
+    (is (= 10 (reduce' + 4 [1 2 3])))
+    (is (= 0 (reduce' + [])))))
+
+(deftest reverse'-test
+  (testing "reverse"
+    (is (= [3 2 1] (reverse' [1 2 3])))
+    (is (= nil (reverse' 1)))))
