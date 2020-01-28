@@ -34,6 +34,11 @@
 
 (deftest every?'-test
   (testing "every'"
-    (is (= true (every?' even? [2 4 6])))
-    (is (= false (every?' even? [1 2 3 4 5 6])))
+    (is (true? (every?' even? [2 4 6])))
+    (is (false? (every?' even? [1 2 3 4 5 6])))
     ))
+
+(deftest some?'-test
+  (testing "some?"
+    (is (true? (some?' even? [1 2 3])))
+    (is (false? (some?' even? [1 5 3])))))
