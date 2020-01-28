@@ -23,3 +23,7 @@
        (map first)
        (partition (count x))
        (single-count x)))
+
+(defn conj-when
+  [pred coll1 coll2]
+  (if (pred (first coll1)) (conj coll2 (first coll1)) coll2))

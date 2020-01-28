@@ -1,4 +1,5 @@
-(ns assignments.lists)
+(ns assignments.lists
+  (:require [assignments.util :as u]))
 
 (defn map'
   "Implement a non-lazy version of map that accepts a
@@ -12,11 +13,14 @@
   (if (= (count colls) 1)
     (loop [coll (first colls) result []]
       (if (empty? coll)
-        result
-        (recur (rest coll) (conj result (f (first coll))))))
+        result (recur
+                 (rest coll)
+                 (conj result (f (first coll))))))
     (loop [colls colls result []]
-      (if (zero? (apply min (map' count colls)))
-        result (recur (map' rest colls) (conj result (apply f (map' first colls))))))))
+      (if (some empty? colls)
+        result (recur
+                 (map' rest colls)
+                 (conj result (apply f (map' first colls))))))))
 
 (defn filter'
   "Implement a non-lazy version of filter that accepts a
@@ -25,8 +29,12 @@
   {:level        :easy
    :use          '[loop recur]
    :dont-use     '[filter]
-   :implemented? false}
-  [pred coll])
+   :implemented? true}
+  [pred coll]
+  (loop [coll coll result []]
+    (if (empty? coll)
+      result
+      (recur (rest coll) (u/conj-when pred coll result)))))
 
 (defn reduce'
   "Implement your own multi-arity version of reduce
@@ -45,8 +53,12 @@
   {:level        :easy
    :use          '[loop recur]
    :dont-use     '[count]
-   :implemented? false}
-  ([coll]))
+   :implemented? true}
+  ([coll]
+   (loop [coll (into [] coll) result 0]
+     (if (empty? coll)
+       result
+       (recur (rest coll) (inc result))))))
 
 (defn reverse'
   "Implement your own version of reverse that reverses a coll.

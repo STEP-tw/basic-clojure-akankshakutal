@@ -10,3 +10,13 @@
       (is (= [2 3 4] (map' inc [1 2 3]))))
     (testing "identity with multiple coll"
       (is (= [3 5 7] (map' + [1 2 3] [2 3 4]))))))
+
+(deftest filter'-test
+  (testing "filter"
+    (is (= [2 4 6] (filter' even? [1 2 3 4 5 6])))))
+
+(deftest count'-test
+  (testing "count'"
+    (is (= 4 (count' [1 2 3 4])))
+    (is (= 4 (count' '(1 2 3 4))))
+    (is (= 4 (count' "word")))))
