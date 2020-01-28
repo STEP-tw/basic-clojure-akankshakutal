@@ -117,8 +117,9 @@
   {:level        :medium
    :use          '[lazy-seq set conj let :optionally letfn]
    :dont-use     '[loop recur distinct]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (apply conj '() (lazy-seq (set coll))))
 
 (defn dedupe'
   "Implement your own lazy sequence version of dedupe which returns
@@ -137,7 +138,8 @@
    :use          '[map + rest]
    :dont-use     '[loop recur partition]
    :implemented? false}
-  [coll])
+  [coll]
+  (map + coll (rest coll)))
 
 (defn max-three-digit-sequence
   "Given a collection of numbers, find a three digit sequence that
@@ -206,8 +208,9 @@
   each element repeated twice"
   {:level        :easy
    :use          '[mapcat partial repeat :optionally vector]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (mapcat (partial repeat 2) coll))
 
 (defn third-or-fifth
   "Given a collection return a new collection that contains
@@ -264,8 +267,13 @@
   {:level        :easy
    :use          '[empty? loop recur butlast rest]
    :dont-use     '[reverse]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (loop [coll coll]
+    (if (empty? coll)
+      true
+      (if (= (first coll) (last coll))
+        (recur (rest (butlast coll))) false))))
 
 (defn index-of
   "index-of takes a sequence and an element and finds the index

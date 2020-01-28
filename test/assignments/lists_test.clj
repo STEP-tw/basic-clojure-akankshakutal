@@ -48,3 +48,27 @@
     (is (true? (ascending? [1 2 3 4])))
     (is (false? (ascending? [1 3 2 4])))
     ))
+
+(deftest distinct'-test
+  (testing "distinct"
+    (is (= '(2 3 4 1) (distinct' [1 2 1 2 3 4])))
+    (is (= '() (distinct' [])))
+    ))
+
+(deftest double-up-test
+  (testing "double up"
+    (is (= [1 1 2 2 3 3] (double-up [1 2 3])))))
+
+;(deftest dedupe'-test
+;  (testing "dedupe"
+;    (is (= [1 2] (dedupe' [1 1 2 2])))
+;    ))
+
+(deftest sum-of-adjacent-digits-test
+  (testing "sum of adjacent"
+    (is (= [3 5] (sum-of-adjacent-digits [1 2 3]))))
+  )
+
+(deftest palindrome?-test
+  (testing "Palindrome"
+    (is (= true (palindrome? [1 2 1])))))
