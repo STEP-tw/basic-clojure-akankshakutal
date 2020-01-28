@@ -31,3 +31,9 @@
   (testing "reverse"
     (is (= [3 2 1] (reverse' [1 2 3])))
     (is (= nil (reverse' 1)))))
+
+(deftest every?'-test
+  (testing "every'"
+    (is (= true (every?' even? [2 4 6])))
+    (is (= false (every?' even? [1 2 3 4 5 6])))
+    ))
