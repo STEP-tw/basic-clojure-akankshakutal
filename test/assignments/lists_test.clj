@@ -42,3 +42,9 @@
   (testing "some?"
     (is (true? (some?' even? [1 2 3])))
     (is (false? (some?' even? [1 5 3])))))
+
+(deftest ascending?-test
+  (testing "ascending?"
+    (is (true? (ascending? [1 2 3 4])))
+    (is (false? (ascending? [1 3 2 4])))
+    ))
