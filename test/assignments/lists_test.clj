@@ -92,5 +92,21 @@
 
 (deftest third-or-fifth-test
   (testing "get third or fifth element"
-    ())
-  )
+    (is (= [1 4 6 7] (third-or-fifth [1 2 3 4 5 6 7 8])))))
+
+(deftest russian-dolls-test
+  (testing "[1 2 3] 3 => [[[1]] [[2]] [[3]]]"
+    (is (= [[[1]] [[2]] [[3]]] (russian-dolls [1 2 3] 3)))
+    (is (= [1 2 3] (russian-dolls [1 2 3] 1)))))
+
+(deftest union-test
+  (testing "get union"
+    (is (= '(1 2 3 4 5) (union [1 2 3 4] [1 2 3 4 5])))))
+
+(deftest difference-test
+  (testing "get intersection"
+    (is (= [4 5] (difference [1 2 3] [1 2 3 4 5])))))
+
+(deftest difference-test
+  (testing "get intersection"
+    (is (= [4 5] (difference [1 2 3] [1 2 3 4 5])))))

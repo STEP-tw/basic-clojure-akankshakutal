@@ -14,15 +14,10 @@
   (let [forms-with-println (mapcat insert-println-if-implemented forms)]
     (list* 'do forms-with-println)))
 
-(defn single-count [x y] (and (= 1 (count y)) (= x (first y))))
-
-(defn single-occurrence? [x y]
-  (->> y
-       (filter (into #{} x))
-       (partition-by identity)
-       (map first)
-       (partition (count x))
-       (single-count x)))
+(defn single-occurrence? [sub-seq coll]
+  (->> coll
+       (filter (set sub-seq))
+       (= sub-seq)))
 
 (defn conj-when
   [pred coll1 coll2]

@@ -169,8 +169,9 @@
   {:level        :easy
    :use          '[remove set]
    :dont-use     '[loop recur if]
-   :implemented? false}
-  [coll1 coll2])
+   :implemented? true}
+  [coll1 coll2]
+  (remove (set coll1) (set coll2)))
 
 (defn union
   "Given two collections, returns a new collection with elements from the second
@@ -179,8 +180,12 @@
   if elements repeat."
   {:level        :easy
    :use          '[remove into set ->>]
-   :implemented? false}
-  [coll1 coll2])
+   :implemented? true}
+  [coll1 coll2]
+  (->> coll1
+       (set)
+       (remove coll2)
+       (into coll2)))
 
 ;; points-around-origin is a def not a defn
 (def
@@ -219,8 +224,8 @@
    :use          '[keep-indexed when :optionally map-indexed filter]
    :implemented? true}
   [coll]
-  (keep-indexed #(if (or (= 0 (rem %1 3)) (= 0 (rem %1 5))) %2)
-                [1 2 3 4 5 6 7]))
+  (keep-indexed #(if (or (zero? (rem %1 3)) (zero? (rem %1 5))) %2)
+                coll))
 
 (defn sqr-of-the-first
   "Given a collection, return a new collection that contains the
@@ -241,8 +246,14 @@
   {:level        :medium
    :use          '[iterate mapv partial vector drop first ->>]
    :dont-use     '[for loop recur reduce]
-   :implemented? false}
-  [coll nesting-factor])
+   :implemented? true}
+  [coll nesting-factor]
+  (mapv #(->> %
+              (iterate vector)
+              (drop (- nesting-factor 1))
+              (first))
+        coll))
+;(mapv #(nth (iterate vector %1) (- nesting-factor 1)) coll)
 
 (defn split-comb
   "Given a collection, return a new sequence where the first
