@@ -71,4 +71,26 @@
 
 (deftest palindrome?-test
   (testing "Palindrome"
-    (is (= true (palindrome? [1 2 1])))))
+    (is (true? (palindrome? [1 2 1])))
+    (is (true? (palindrome? [])))
+    (is (false? (palindrome? [1 2 3])))))
+
+(deftest index-of-test
+  (testing "index of"
+    (is (= 4 (index-of [2 3 4 5 1] 1)))
+    (is (= -1 (index-of [2 3 4 5 1] 8)))
+    ))
+
+(deftest muted-thirds-test
+  (testing "muted third [1 2 8 4 15 2 7] => [1 2 0 4 15 0 7]"
+    (is (= [1 2 0 4 15 0 7] (muted-thirds [1 2 8 4 15 2 7])))))
+
+(deftest sqr-of-the-first-test
+  (testing "squre of first [4 5 6] => [16 16 16]"
+    (is (= [16 16 16] (sqr-of-the-first [4 5 6]))))
+  )
+
+(deftest third-or-fifth-test
+  (testing "get third or fifth element"
+    ())
+  )

@@ -79,7 +79,7 @@
   {:level        :easy
    :use          '[loop recur and]
    :dont-use     '[every?]
-   :implemented? false}
+   :implemented? true}
   ([pred coll]
    (loop [coll coll result true]
      (if (or (empty? coll) (not result))
@@ -137,7 +137,7 @@
   {:level        :medium
    :use          '[map + rest]
    :dont-use     '[loop recur partition]
-   :implemented? false}
+   :implemented? true}
   [coll]
   (map + coll (rest coll)))
 
@@ -217,8 +217,10 @@
   elements whose index is either divisible by three or five"
   {:level        :easy
    :use          '[keep-indexed when :optionally map-indexed filter]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (keep-indexed #(if (or (= 0 (rem %1 3)) (= 0 (rem %1 5))) %2)
+                [1 2 3 4 5 6 7]))
 
 (defn sqr-of-the-first
   "Given a collection, return a new collection that contains the
@@ -227,8 +229,10 @@
   [4 5 6] => [16 16 16]"
   {:level        :easy
    :use          '[map constantly let]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (let [number (first coll)]
+    (map (constantly (* number number)) coll)))
 
 (defn russian-dolls
   "Given a collection and a number, wrap each element in a nested vector
@@ -259,8 +263,8 @@
   {:level        :easy
    :use          '[map cycle]
    :dont-use     '[loop recur map-indexed take take-nth]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll] (map * coll (cycle [1 1 0])))
 
 (defn palindrome?
   "Implement a recursive palindrome check of any given sequence"
@@ -282,8 +286,14 @@
   {:level        :easy
    :use          '[loop recur rest]
    :dont-use     '[.indexOf memfn]
-   :implemented? false}
-  [coll n])
+   :implemented? true}
+  [coll n]
+  (loop [coll coll index 0]
+    (if (empty? coll)
+      -1
+      (if (= n (first coll))
+        index
+        (recur (rest coll) (inc index))))))
 
 (defn validate-sudoku-grid
   "Given a 9 by 9 sudoku grid, validate it."
