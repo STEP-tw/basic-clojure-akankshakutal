@@ -156,12 +156,13 @@
 (def
   ^{:level        :easy
     :dont-use     '[loop recur for nth get]
-    :implemented? false}
+    :implemented? true}
   transpose
   "Transposes a given matrix.
   [[a b] [c d]] => [[a c] [b d]].
   Note this is a def. Not a defn.
-  Return a vector of vectors, not list of vectors or vectors of lists")
+  Return a vector of vectors, not list of vectors or vectors of lists"
+  (comp (partial into []) (partial apply map vector)))
 
 (defn difference
   "Given two collections, returns only the elements that are present
@@ -205,8 +206,9 @@
   [[1 4] [1 3] [1 5] [2 4] [2 3] [2 5] [3 4]]"
   {:level        :easy
    :use          '[for]
-   :implemented? false}
-  [seq1 seq2])
+   :implemented? true}
+  [seq1 seq2]
+  (for [x seq1 y seq2 :while (not= x y)] [x y]))
 
 (defn double-up
   "Given a collection, return a new collection that contains

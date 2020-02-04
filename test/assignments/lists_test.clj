@@ -110,3 +110,12 @@
 (deftest difference-test
   (testing "get intersection"
     (is (= [4 5] (difference [1 2 3] [1 2 3 4 5])))))
+
+(deftest transpose-test
+  (testing "transpose"
+    (is (= [[:a :c] [:b :d]] (transpose [[:a :b] [:c :d]])))))
+
+(deftest cross-product-test
+  (testing "cross product of 3 * 3"
+    (is (= [[1 4] [1 3] [1 5] [2 4] [2 3] [2 5] [3 4]]
+           (cross-product [1 2 3] [4 3 5])))))
