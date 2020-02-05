@@ -158,3 +158,7 @@
     (is (= [1 2 3 1] (dedupe' [1 2 3 1]))))
   (testing "dedupe should remove consecutive duplicates"
     (is (= [1 2 3 1] (dedupe' [1 2 2 3 1])))))
+
+(deftest max-three-digit-sequence-test
+  (testing "give sequence if three digits who yields max sum"
+    (is (= [2 -1 2] (max-three-digit-sequence [1 2 -1 2 0])))))
