@@ -60,7 +60,7 @@
    :dont-use     '[count]
    :implemented? true}
   ([coll]
-   (loop [coll (into [] coll) result 0]
+   (loop [coll (vec coll) result 0]
      (if (empty? coll)
          result
          (recur (rest coll) (inc result))))))
@@ -113,11 +113,11 @@
   (every? (partial apply <=) (partition 2 1 coll)))
 
 (defn dist
-  [previous-set coll]
-  (lazy-seq (when-let [x (first coll)]
-                      (if (nil? (previous-set x))
-                          (cons x (dist (conj previous-set x) (rest coll)))
-                          (dist previous-set (rest coll))))))
+  [previous coll]
+  (lazy-seq (when-let [element (first coll)]
+                      (if (nil? (previous element))
+                          (cons element (dist (conj previous element) (rest coll)))
+                          (dist previous (rest coll))))))
 
 (defn distinct'
   "Implement your own lazy sequence version of distinct which returns
@@ -130,15 +130,23 @@
   [coll]
   (dist #{} coll))
 
+(defn my-dedupe
+  [previous coll]
+  (lazy-seq (when-let [element (first coll)]
+                      (if (= previous element)
+                          (my-dedupe previous (rest coll))
+                          (cons element (my-dedupe element (rest coll)))))))
+
 (defn dedupe'
   "Implement your own lazy sequence version of dedupe which returns
   a collection with consecutive duplicates eliminated (like the uniq command).
   Might have to implement another function, or use a letfn"
   {:level        :medium
    :use          '[lazy-seq conj let :optionally letfn]
-   :dont-use     '[loop recur dedupe]
-   :implemented? false}
-  [coll])
+   :dont-use     '[loop recur my-dedupe]
+   :implemented? true}
+  [coll]
+  (my-dedupe nil coll))
 
 (defn sum-of-adjacent-digits
   "Given a collection, returns a map of the sum of adjacent digits.
@@ -209,7 +217,7 @@
   Note this is a def, not a defn"
   (for [x (range -1 2)
         y (range -1 2)
-        :when (not (= x y 0))]
+        :when (not= x y 0)]
     [x y]))
 
 (defn cross-product
@@ -265,10 +273,10 @@
   [coll nesting-factor]
   (mapv #(->> %
               (iterate vector)
-              (drop (- nesting-factor 1))
+              (drop (dec nesting-factor))
               (first))
         coll))
-;(mapv #(nth (iterate vector %1) (- nesting-factor 1)) coll)
+;(mapv #(nth (iterate vector %1) (dec nesting-factor)) coll)
 
 (defn split-comb
   "Given a collection, return a new sequence where the first
@@ -334,7 +342,7 @@
    :implemented? true}
   [grid]
   (every?' #(= #{1 2 3 4 5 6 7 8 9} (set %1))
-           (concat grid (into [] (apply map vector grid))
+           (concat grid (vec (apply map vector grid))
                    (->> grid
                         (map (partial partition 3))
                         (partition 3)

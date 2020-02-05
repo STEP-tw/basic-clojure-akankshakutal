@@ -58,11 +58,6 @@
   (testing "double up"
     (is (= [1 1 2 2 3 3] (double-up [1 2 3])))))
 
-;(deftest dedupe'-test
-;  (testing "dedupe"
-;    (is (= [1 2] (dedupe' [1 1 2 2])))
-;    ))
-
 (deftest sum-of-adjacent-digits-test
   (testing "sum of adjacent"
     (is (= [3 5] (sum-of-adjacent-digits [1 2 3]))))
@@ -157,3 +152,9 @@
                    [5 1 9 3 2 6 8 7 4]
                    [2 4 8 9 5 7 1 3 6]
                    [7 6 3 4 1 8 2 5 9]])))))
+
+(deftest dedupe'-test
+  (testing "dedupe should not remove any element"
+    (is (= [1 2 3 1] (dedupe' [1 2 3 1]))))
+  (testing "dedupe should remove consecutive duplicates"
+    (is (= [1 2 3 1] (dedupe' [1 2 2 3 1])))))
