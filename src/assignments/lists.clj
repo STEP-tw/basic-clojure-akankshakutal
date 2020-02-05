@@ -11,16 +11,16 @@
    :implemented? true}
   [f & colls]
   (if (= (count colls) 1)
-    (loop [coll (first colls) result []]
-      (if (empty? coll)
-        result (recur
-                 (rest coll)
-                 (conj result (f (first coll))))))
-    (loop [colls colls result []]
-      (if (some empty? colls)
-        result (recur
-                 (map' rest colls)
-                 (conj result (apply f (map' first colls))))))))
+      (loop [coll (first colls) result []]
+        (if (empty? coll)
+            result
+            (recur (rest coll)
+                   (conj result (f (first coll))))))
+      (loop [colls colls result []]
+        (if (some empty? colls)
+            result
+            (recur (map' rest colls)
+                   (conj result (apply f (map' first colls))))))))
 
 (defn filter'
   "Implement a non-lazy version of filter that accepts a
@@ -33,8 +33,8 @@
   [pred coll]
   (loop [coll coll result []]
     (if (empty? coll)
-      result
-      (recur (rest coll) (u/conj-when pred coll result)))))
+        result
+        (recur (rest coll) (u/conj-when pred coll result)))))
 
 (defn reduce'
   "Implement your own multi-arity version of reduce
@@ -44,12 +44,13 @@
    :use          '[loop recur]
    :dont-use     '[reduce]
    :implemented? true}
-  ([f coll] (reduce' f (u/get-or-default coll f) (rest coll)))
+  ([f coll]
+   (reduce' f (u/get-or-default coll f) (rest coll)))
   ([f init coll]
    (loop [coll coll result init]
      (if (empty? coll)
-       result
-       (recur (rest coll) (f result (first coll)))))))
+         result
+         (recur (rest coll) (f result (first coll)))))))
 
 (defn count'
   "Implement your own version of count that counts the
@@ -61,8 +62,8 @@
   ([coll]
    (loop [coll (into [] coll) result 0]
      (if (empty? coll)
-       result
-       (recur (rest coll) (inc result))))))
+         result
+         (recur (rest coll) (inc result))))))
 
 (defn reverse'
   "Implement your own version of reverse that reverses a coll.
@@ -71,7 +72,8 @@
    :use          '[reduce conj seqable? when]
    :dont-use     '[reverse]
    :implemented? true}
-  ([coll] (when (seqable? coll) (reduce conj '() coll))))
+  ([coll]
+   (when (seqable? coll) (reduce conj '() coll))))
 
 (defn every?'
   "Implement your own version of every? that checks if every
@@ -83,8 +85,8 @@
   ([pred coll]
    (loop [coll coll result true]
      (if (or (empty? coll) (not result))
-       result
-       (recur (rest coll) (pred (first coll)))))))
+         result
+         (recur (rest coll) (pred (first coll)))))))
 
 (defn some?'
   "Implement your own version of some that checks if at least one
@@ -98,8 +100,8 @@
   ([pred coll]
    (loop [coll coll result false]
      (if (or (empty? coll) result)
-       result
-       (recur (rest coll) (pred (first coll)))))))
+         result
+         (recur (rest coll) (pred (first coll)))))))
 
 (defn ascending?
   "Verify if every element is greater than or equal to its predecessor"
@@ -110,16 +112,23 @@
   [coll]
   (every? (partial apply <=) (partition 2 1 coll)))
 
+(defn dist
+  [previous-set coll]
+  (lazy-seq (when-let [x (first coll)]
+                      (if (nil? (previous-set x))
+                          (cons x (dist (conj previous-set x) (rest coll)))
+                          (dist previous-set (rest coll))))))
+
 (defn distinct'
   "Implement your own lazy sequence version of distinct which returns
   a collection with duplicates eliminated. Might have to implement another
   function, or use a letfn"
   {:level        :medium
    :use          '[lazy-seq set conj let :optionally letfn]
-   :dont-use     '[loop recur distinct]
+   :dont-use     '[loop recur dist]
    :implemented? true}
   [coll]
-  (apply conj '() (lazy-seq (set coll))))
+  (dist #{} coll))
 
 (defn dedupe'
   "Implement your own lazy sequence version of dedupe which returns
@@ -277,8 +286,8 @@
                          (split-at (quot size 2))
                          (apply interleave))]
     (if (zero? (rem size 2))
-      interleaved
-      (concat interleaved (take-last 1 coll)))))
+        interleaved
+        (concat interleaved (take-last 1 coll)))))
 
 (defn muted-thirds
   "Given a sequence of numbers, make every third element
@@ -299,9 +308,9 @@
   [coll]
   (loop [coll coll]
     (if (empty? coll)
-      true
-      (if (= (first coll) (last coll))
-        (recur (rest (butlast coll))) false))))
+        true
+        (if (= (first coll) (last coll))
+            (recur (rest (butlast coll))) false))))
 
 (defn index-of
   "index-of takes a sequence and an element and finds the index
@@ -314,10 +323,10 @@
   [coll n]
   (loop [coll coll index 0]
     (if (empty? coll)
-      -1
-      (if (= n (first coll))
-        index
-        (recur (rest coll) (inc index))))))
+        -1
+        (if (= n (first coll))
+            index
+            (recur (rest coll) (inc index))))))
 
 (defn validate-sudoku-grid
   "Given a 9 by 9 sudoku grid, validate it."

@@ -51,9 +51,8 @@
 
 (deftest distinct'-test
   (testing "distinct"
-    (is (= '(2 3 4 1) (distinct' [1 2 1 2 3 4])))
-    (is (= '() (distinct' [])))
-    ))
+    (is (= '(1 2 3 4) (distinct' [1 2 1 2 3 4])))
+    (is (= '() (distinct' [])))))
 
 (deftest double-up-test
   (testing "double up"
