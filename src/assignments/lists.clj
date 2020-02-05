@@ -193,11 +193,15 @@
   ^{:level        :easy
     :use          '[for]
     :dont-use     '[hardcoded-values map filter]
-    :implemented? false}
+    :implemented? true}
   points-around-origin
   "Calculate all the points around the origin
   [-1 -1] [0 -1] [1 -1] etc. There should be 8 points
-  Note this is a def, not a defn")
+  Note this is a def, not a defn"
+  (for [x (range -1 2)
+        y (range -1 2)
+        :when (not (= x y 0))]
+    [x y]))
 
 (defn cross-product
   "Given two sequences, generate every combination in the sequence
@@ -266,8 +270,15 @@
   {:level        :easy
    :use          '[interleave split-at if rem concat take-last]
    :dont-use     '[loop recur map-indexed take drop]
-   :implemented? false}
-  [coll])
+   :implemented? true}
+  [coll]
+  (let [size (count coll)
+        interleaved (->> coll
+                         (split-at (quot size 2))
+                         (apply interleave))]
+    (if (zero? (rem size 2))
+      interleaved
+      (concat interleaved (take-last 1 coll)))))
 
 (defn muted-thirds
   "Given a sequence of numbers, make every third element
@@ -311,5 +322,14 @@
 (defn validate-sudoku-grid
   "Given a 9 by 9 sudoku grid, validate it."
   {:level        :hard
-   :implemented? false}
-  [grid])
+   :implemented? true}
+  [grid]
+  (every?' #(= #{1 2 3 4 5 6 7 8 9} (set %1))
+           (concat grid (into [] (apply map vector grid))
+                   (->> grid
+                        (map (partial partition 3))
+                        (partition 3)
+                        (map (partial apply map list))
+                        (mapcat identity)
+                        (map flatten)
+                        (mapv vec)))))
